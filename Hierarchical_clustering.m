@@ -11,12 +11,12 @@ title('Input data');
 
 qualityFactor = zeros(3);
 
-%??????? ??????????: 1 ? ?????????, 2 ? ??????????????????? ?????????, 3 ? ??????
+%Метрики расстояния: 1 – Евклидово, 2 – стандартизированное Евклидово, 3 – города
 %                       'euclidean'                 'seuclidean'            'cityblock'
-%?????? ??????????: a ? ???????? ??????, b ? ???????? ??????, c ? ??????? ?????
+%Методы связывания: a – ближнего соседа, b – дальнего соседа, c – средней связи
 %                       'single'                'complete'               'average'
 
-%?????????
+%Евклидово
 DEuclidean = pdist(X, 'euclidean'); 
 EuclideanSingle = linkage(DEuclidean,'single');
 qualityFactor(1,1) = cophenet(EuclideanSingle, DEuclidean);
@@ -25,7 +25,7 @@ qualityFactor(1,2) = cophenet(EuclideanComplete, DEuclidean);
 EuclideanAverage = linkage(DEuclidean,'average');
 qualityFactor(1,3) = cophenet(EuclideanAverage, DEuclidean);
 
-%??????????????????? ?????????
+%стандартизированное Евклидово
 Dseuclidean = pdist(X, 'seuclidean');
 SeuclideanSingle = linkage(Dseuclidean,'single');
 qualityFactor(2,1) = cophenet(SeuclideanSingle,Dseuclidean);
@@ -35,7 +35,7 @@ SeuclideanAverage = linkage(Dseuclidean,'average');
 qualityFactor(2,3) = cophenet(SeuclideanAverage,Dseuclidean);
 
 
-%??????
+%города
 Dcityblock = pdist(X, 'cityblock');
 CityblockSingle = linkage(Dcityblock,'single');
 qualityFactor(3,1) = cophenet(CityblockSingle,Dcityblock);
@@ -44,7 +44,7 @@ qualityFactor(3,2) = cophenet(CityblockComplete,Dcityblock);
 CityblockAverage = linkage(Dcityblock,'average');
 qualityFactor(3,3) = cophenet(CityblockAverage,Dcityblock);
 
-%?????????????
+%транспонируем
 k = qualityFactor'
 
 figure
@@ -57,7 +57,7 @@ gscatter(X(:,1),X(:,2),T);
 hold on
 k1=1; k2=1; k3=1; k4=1;
 
-%???? ?? ??????? ????????
+%идем по каждому элементу
 for i=1:24;
      if (T(i) == 1)
         clust1(k1,:) = X(i,:);
@@ -77,7 +77,7 @@ for i=1:24;
      end
 end
 
-%??????
+%центры
 M = [mean(clust1);mean(clust2);mean(clust3);mean(clust4)];
 VAR = [var(clust1);var(clust2);var(clust3);var(clust4)];
 
